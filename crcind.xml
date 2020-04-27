@@ -3,7 +3,7 @@
    <soapenv:Body>
       <tem:GetListByName>
          <!--Optional:-->
-         <tem:name>newt</tem:name>
+         <tem:name></tem:name>
       </tem:GetListByName>
    </soapenv:Body>
 </soapenv:Envelope>
