@@ -1,0 +1,23 @@
+{
+  "name": "api-challenge",
+  "version": "1.0.0",
+  "description": "Tribal Api Challenge",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jose Guardiola",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "easy-soap-request": "^3.3.1",
+    "express": "^4.17.1",
+    "xml2js": "^0.4.23"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
