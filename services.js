@@ -24,7 +24,20 @@ module.exports = {
         if (err) {
           reject(err)
         }
-        return resolve(result)
+        if (result["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["GetListByNameResponse"]["GetListByNameResult"]) {
+          let structuredResult = result["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["GetListByNameResponse"]["GetListByNameResult"]["PersonIdentification"].map(res => {
+            let newObj = {
+              service: 'crcind',
+              type: 'person',
+              name: res.Name,
+              SSN: res.SSN,
+              DOB: res.DOB
+            }
+            return newObj
+          })
+          return resolve(structuredResult)
+        }
+        return resolve([])
       })
     }).catch(err => reject(err))
   })
@@ -33,7 +46,18 @@ module.exports = {
     let url = `https://itunes.apple.com/search?term=${term}&entity=song&limit=50`
     return new Promise ((resolve, reject) => {
       axios.get(url).then(res => {
-        resolve(res.data)
+        console.log('RES', res.data.results)
+        let structuredResults = res.data.results.map(res => {
+          let newObj = {
+            service: 'itunesMusic',
+            type: res.kind,
+            artistName: res.artistName,
+            trackName: res.trackName,
+            trackUrl: res.trackViewUrl
+          }
+          return newObj
+        })
+        resolve(structuredResults)
     }).catch(err => reject(err))
     })
   },
@@ -41,7 +65,17 @@ module.exports = {
     let url = `https://itunes.apple.com/search?term=${term}&entity=movie&limit=50`
     return new Promise ((resolve, reject) => {
       axios.get(url).then(res => {
-        resolve(res.data)
+        let structuredResults = res.data.results.map(res => {
+          let newObj = {
+            service: 'itunesMovies',
+            type: res.kind,
+            artistName: res.artistName,
+            movieName: res.trackName,
+            trackUrl: res.trackViewUrl
+          }
+          return newObj
+        })
+        resolve(structuredResults)
     }).catch(err => reject(err))
     })
   },
@@ -49,7 +83,18 @@ module.exports = {
     let url = `http://api.tvmaze.com/search/shows?q=${term}`
     return new Promise ((resolve, reject) => {
       axios.get(url).then(res => {
-        resolve(res.data)
+        let structuredResults = res.data.map(res => {
+          let newObj = {
+            service: 'tvmaze',
+            type: 'show',
+            score: res.score,
+            artistName: res.show.artistName,
+            movieName: res.show.name,
+            trackUrl: res.show.url
+          }
+          return newObj
+        })
+        resolve(structuredResults)
     }).catch(err => reject(err))
     })
   }
