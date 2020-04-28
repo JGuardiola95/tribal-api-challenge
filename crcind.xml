@@ -1,9 +1,0 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <tem:GetListByName>
-         <!--Optional:-->
-         <tem:name></tem:name>
-      </tem:GetListByName>
-   </soapenv:Body>
-</soapenv:Envelope>
