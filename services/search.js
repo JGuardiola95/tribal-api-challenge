@@ -30,8 +30,7 @@ module.exports = {
               service: 'crcind',
               type: 'person',
               name: res.Name,
-              SSN: res.SSN,
-              DOB: res.DOB
+              url: ''
             }
             return newObj
           })
@@ -46,14 +45,12 @@ module.exports = {
     let url = `https://itunes.apple.com/search?term=${term}&entity=song&limit=50`
     return new Promise ((resolve, reject) => {
       axios.get(url).then(res => {
-        console.log('RES', res.data.results)
         let structuredResults = res.data.results.map(res => {
           let newObj = {
             service: 'itunesMusic',
             type: res.kind,
-            artistName: res.artistName,
-            trackName: res.trackName,
-            trackUrl: res.trackViewUrl
+            name: res.trackName,
+            url: res.trackViewUrl
           }
           return newObj
         })
@@ -69,9 +66,8 @@ module.exports = {
           let newObj = {
             service: 'itunesMovies',
             type: res.kind,
-            artistName: res.artistName,
-            movieName: res.trackName,
-            trackUrl: res.trackViewUrl
+            name: res.trackName,
+            url: res.trackViewUrl
           }
           return newObj
         })
@@ -87,10 +83,8 @@ module.exports = {
           let newObj = {
             service: 'tvmaze',
             type: 'show',
-            score: res.score,
-            artistName: res.show.artistName,
-            movieName: res.show.name,
-            trackUrl: res.show.url
+            name: res.show.name,
+            url: res.show.url
           }
           return newObj
         })

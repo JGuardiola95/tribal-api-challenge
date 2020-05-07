@@ -1,22 +1,19 @@
 require('dotenv').config()
+const cors = require('cors');
 const fs = require('fs');
 const express = require('express')
-const { getPeople, getMusic, getMovies, getShows } = require("./services") // Utilities
-
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUi = require('swagger-ui-express')
+const apiSearch = require("./api/search");
+const swaggerOptions = require("./config/swagger");
 
 const app = express()
 
-app.get('/search', (req, res, next) => {
-  let term = req.query.term
-  Promise.all([getPeople(term), getMusic(term), getMovies(term), getShows(term)]).then(values => {
-    let mergedValues = [].concat(...values)
-    if (mergedValues.length <= 0) {
-      return res.status(200).json({resultCount: mergedValues.length, results: [], msg: 'No results'})
-    }
-    let result = {resultCount: mergedValues.length, results: mergedValues}
-    return res.status(200).json(result)
-  });
-})
+app.use(cors());
+apiSearch(app, swaggerUi);
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Listening on port " + (process.env.PORT ? process.env.PORT : 3000))
